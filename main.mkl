@@ -1,0 +1,19 @@
+domain financeiro
+service plano_contas {
+	
+	config {
+		groupId: "br.com.kerubin.api"
+		version: "1.0.0-SNAPSHOT"
+		cloudConfigUri: "http://localhost:9091"
+		servicePort: 9010
+	}
+	
+	
+	/**	Define your entities
+	entity person {
+		id: uuid
+		name: string
+	}
+	*/
+	
+}
