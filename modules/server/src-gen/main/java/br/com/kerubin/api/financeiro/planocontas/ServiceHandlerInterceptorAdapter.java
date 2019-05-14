@@ -29,6 +29,9 @@ public class ServiceHandlerInterceptorAdapter extends HandlerInterceptorAdapter 
 		ServiceContext.setTenant(currentTenant);
 		ServiceContext.setUser(currentUser);
 		
+		ServiceContext.setDomain(FinanceiroPlanoContasConstants.DOMAIN);
+		ServiceContext.setService(FinanceiroPlanoContasConstants.SERVICE);
+		
 	}
 	
 	@Override

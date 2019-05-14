@@ -1,6 +1,7 @@
 server:
   port: 9010
 
+spring:
     rabbitmq:
         port: 5672
         username: admin

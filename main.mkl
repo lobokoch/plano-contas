@@ -8,12 +8,34 @@ service plano_contas {
 		servicePort: 9010
 	}
 	
-	
-	/**	Define your entities
-	entity person {
-		id: uuid
-		name: string
+	@label("Plano de Contas")
+	@auditing	
+	entity planoConta {
+		code: string
+		label: "Código"
+		
+		description: string
+		label: "Descrição"
+		
+		parentPlanoConta: refers planoConta? manyToOne
+		label: "Plano de Contas Pai"
+		 
+		active: boolean
+		label: "Ativo"
+		
+		kind: planoContaKind
+		label: "Tipo da conta"
 	}
-	*/
+	
+	enum planoContaKind {
+		CREDITO
+		label: "Crédito"
+		
+		DEBITO
+		label: "Dédito"
+	}
+	
+	
+	
 	
 }

@@ -1,6 +1,6 @@
 package br.com.kerubin.api.financeiro.planocontas;
 
-public interface FinanceiroPlanocontasConstants {
+public interface FinanceiroPlanoContasConstants {
 	
 	String DOMAIN = "financeiro";
 	String SERVICE = "plano_contas";
