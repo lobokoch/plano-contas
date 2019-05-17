@@ -10,29 +10,53 @@ service plano_contas {
 	
 	@label("Plano de Contas")
 	@auditing	
-	entity planoConta {
-		code: string
+	entity PlanoConta {
+		
+		codigo: string
 		label: "Código"
+		autoComplete
+		web(styleClass: "ui-md-2")
+		listFilter(many: "Códigos")
 		
-		description: string
+		descricao: string
 		label: "Descrição"
+		autoComplete
+		web(styleClass: "ui-md-10")		
+		listFilter(many: "Descrições")
 		
-		parentPlanoConta: refers planoConta? manyToOne
-		label: "Plano de Contas Pai"
-		 
-		active: boolean
+		tipoFinanceiro: TipoPlanoContaFinanceiro
+		label: "Tipo Financeiro"
+		web(styleClass: "ui-md-2")
+		
+		tipoReceitaDespesa: TipoReceitaDespesa?
+		label: "Tipo Receita/Despesa"
+		web(styleClass: "ui-md-2")
+		
+		planoContaPai: refers PlanoConta? manyToOne
+		label: "Plano de Conta Pai"
+		web(styleClass: "ui-md-7")
+		
+		ativo: boolean default: true displayTrue: "Sim" displayFalse: "Não"
 		label: "Ativo"
+		web(styleClass: "ui-md-1")
+		listFilter(isNotNull_isNull: "Ativo;Inativo" default: "isNotNull")
 		
-		kind: planoContaKind
-		label: "Tipo da conta"
 	}
 	
-	enum planoContaKind {
-		CREDITO
-		label: "Crédito"
+	enum TipoReceitaDespesa {
+		FIXO
+		label: "Fixa"
 		
-		DEBITO
-		label: "Dédito"
+		VARIAVEL
+		label: "Variável"
+	}
+	
+	enum TipoPlanoContaFinanceiro {
+		RECEITA
+		label: "Receita"
+		
+		DESPESA
+		label: "Despesa"
 	}
 	
 	

@@ -5,22 +5,32 @@ public class PlanoContaLookupResult {
 
 	private java.util.UUID id;
 	
-	private String code;
+	private String codigo;
+	
+	private String descricao;
 	
 	public java.util.UUID getId() {
 		return id;
 	}
 	
-	public String getCode() {
-		return code;
+	public String getCodigo() {
+		return codigo;
+	}
+	
+	public String getDescricao() {
+		return descricao;
 	}
 	
 	public void setId(java.util.UUID id) {
 		this.id = id;
 	}
 	
-	public void setCode(String code) {
-		this.code = code;
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+	
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 	
 	@Override

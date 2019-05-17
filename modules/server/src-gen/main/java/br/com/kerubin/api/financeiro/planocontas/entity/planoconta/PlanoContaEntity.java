@@ -7,13 +7,14 @@ import javax.persistence.Column;
 import br.com.kerubin.api.database.entity.AuditingEntity;
 import javax.persistence.GeneratedValue;
 import org.hibernate.annotations.GenericGenerator;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import br.com.kerubin.api.financeiro.planocontas.TipoPlanoContaFinanceiro;
+import br.com.kerubin.api.financeiro.planocontas.TipoReceitaDespesa;
 import br.com.kerubin.api.financeiro.planocontas.entity.planoconta.PlanoContaEntity;
 import javax.persistence.ManyToOne;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import br.com.kerubin.api.financeiro.planocontas.PlanoContaKind;
 
 @Entity
 @Table(name = "plano_conta")
@@ -25,79 +26,92 @@ public class PlanoContaEntity extends AuditingEntity {
 	@Column(name="id")
 	private java.util.UUID id;
 	
-	@Column(name="code")
-	private String code;
+	@Column(name="codigo")
+	private String codigo;
 	
-	@Column(name="description")
-	private String description;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "parent_plano_conta")
-	private PlanoContaEntity parentPlanoConta;
-	
-	@Column(name="active")
-	private Boolean active;
+	@Column(name="descricao")
+	private String descricao;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name="kind")
-	private PlanoContaKind kind;
+	@Column(name="tipo_financeiro")
+	private TipoPlanoContaFinanceiro tipoFinanceiro;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="tipo_receita_despesa")
+	private TipoReceitaDespesa tipoReceitaDespesa;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "plano_conta_pai")
+	private PlanoContaEntity planoContaPai;
+	
+	@Column(name="ativo")
+	private Boolean ativo = true;
 	
 	public java.util.UUID getId() {
 		return id;
 	}
 	
-	public String getCode() {
-		return code;
+	public String getCodigo() {
+		return codigo;
 	}
 	
-	public String getDescription() {
-		return description;
+	public String getDescricao() {
+		return descricao;
 	}
 	
-	public PlanoContaEntity getParentPlanoConta() {
-		return parentPlanoConta;
+	public TipoPlanoContaFinanceiro getTipoFinanceiro() {
+		return tipoFinanceiro;
 	}
 	
-	public Boolean getActive() {
-		return active;
+	public TipoReceitaDespesa getTipoReceitaDespesa() {
+		return tipoReceitaDespesa;
 	}
 	
-	public PlanoContaKind getKind() {
-		return kind;
+	public PlanoContaEntity getPlanoContaPai() {
+		return planoContaPai;
+	}
+	
+	public Boolean getAtivo() {
+		return ativo;
 	}
 	
 	public void setId(java.util.UUID id) {
 		this.id = id;
 	}
 	
-	public void setCode(String code) {
-		this.code = code != null ? code.trim() : code; // Chamadas REST fazem trim.
+	public void setCodigo(String codigo) {
+		this.codigo = codigo != null ? codigo.trim() : codigo; // Chamadas REST fazem trim.
 	}
 	
-	public void setDescription(String description) {
-		this.description = description != null ? description.trim() : description; // Chamadas REST fazem trim.
+	public void setDescricao(String descricao) {
+		this.descricao = descricao != null ? descricao.trim() : descricao; // Chamadas REST fazem trim.
 	}
 	
-	public void setParentPlanoConta(PlanoContaEntity parentPlanoConta) {
-		this.parentPlanoConta = parentPlanoConta;
+	public void setTipoFinanceiro(TipoPlanoContaFinanceiro tipoFinanceiro) {
+		this.tipoFinanceiro = tipoFinanceiro;
 	}
 	
-	public void setActive(Boolean active) {
-		this.active = active;
+	public void setTipoReceitaDespesa(TipoReceitaDespesa tipoReceitaDespesa) {
+		this.tipoReceitaDespesa = tipoReceitaDespesa;
 	}
 	
-	public void setKind(PlanoContaKind kind) {
-		this.kind = kind;
+	public void setPlanoContaPai(PlanoContaEntity planoContaPai) {
+		this.planoContaPai = planoContaPai;
+	}
+	
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 	
 	public void assign(PlanoContaEntity source) {
 		if (source != null) {
 			this.setId(source.getId());
-			this.setCode(source.getCode());
-			this.setDescription(source.getDescription());
-			this.setParentPlanoConta(source.getParentPlanoConta());
-			this.setActive(source.getActive());
-			this.setKind(source.getKind());
+			this.setCodigo(source.getCodigo());
+			this.setDescricao(source.getDescricao());
+			this.setTipoFinanceiro(source.getTipoFinanceiro());
+			this.setTipoReceitaDespesa(source.getTipoReceitaDespesa());
+			this.setPlanoContaPai(source.getPlanoContaPai());
+			this.setAtivo(source.getAtivo());
 			this.setCreatedBy(source.getCreatedBy());
 			this.setCreatedDate(source.getCreatedDate());
 			this.setLastModifiedBy(source.getLastModifiedBy());
@@ -108,11 +122,12 @@ public class PlanoContaEntity extends AuditingEntity {
 	public PlanoContaEntity clone() {
 		PlanoContaEntity theClone = new PlanoContaEntity();
 		theClone.setId(this.getId());
-		theClone.setCode(this.getCode());
-		theClone.setDescription(this.getDescription());
-		theClone.setParentPlanoConta(this.getParentPlanoConta());
-		theClone.setActive(this.getActive());
-		theClone.setKind(this.getKind());
+		theClone.setCodigo(this.getCodigo());
+		theClone.setDescricao(this.getDescricao());
+		theClone.setTipoFinanceiro(this.getTipoFinanceiro());
+		theClone.setTipoReceitaDespesa(this.getTipoReceitaDespesa());
+		theClone.setPlanoContaPai(this.getPlanoContaPai());
+		theClone.setAtivo(this.getAtivo());
 		theClone.setCreatedBy(this.getCreatedBy());
 		theClone.setCreatedDate(this.getCreatedDate());
 		theClone.setLastModifiedBy(this.getLastModifiedBy());

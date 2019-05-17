@@ -18,4 +18,8 @@ public interface PlanoContaService {
 	public Page<PlanoContaEntity> list(PlanoContaListFilter planoContaListFilter, Pageable pageable);
 	
 	public Collection<PlanoContaAutoComplete> autoComplete(String query);
+	
+	public Collection<PlanoContaCodigoAutoComplete> planoContaCodigoAutoComplete(String query);
+	
+	public Collection<PlanoContaDescricaoAutoComplete> planoContaDescricaoAutoComplete(String query);
 }

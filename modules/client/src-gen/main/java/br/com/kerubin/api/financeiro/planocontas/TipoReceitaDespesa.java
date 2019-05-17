@@ -1,7 +1,7 @@
 package br.com.kerubin.api.financeiro.planocontas;
 
-public enum PlanoContaKind {
-	CREDITO,
-	DEBITO;
+public enum TipoReceitaDespesa {
+	FIXO,
+	VARIAVEL;
 }
 

@@ -73,5 +73,17 @@ public class PlanoContaServiceImpl implements PlanoContaService {
 		return result;
 	}
 	
+	@Transactional(readOnly = true)
+	public Collection<PlanoContaCodigoAutoComplete> planoContaCodigoAutoComplete(String query) {
+		Collection<PlanoContaCodigoAutoComplete> result = planoContaRepository.planoContaCodigoAutoComplete(query);
+		return result;
+	}
+	
+	@Transactional(readOnly = true)
+	public Collection<PlanoContaDescricaoAutoComplete> planoContaDescricaoAutoComplete(String query) {
+		Collection<PlanoContaDescricaoAutoComplete> result = planoContaRepository.planoContaDescricaoAutoComplete(query);
+		return result;
+	}
+	
 	
 }

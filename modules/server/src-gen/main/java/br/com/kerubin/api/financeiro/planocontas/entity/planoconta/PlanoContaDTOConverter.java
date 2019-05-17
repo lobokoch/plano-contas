@@ -1,21 +1,15 @@
 
 package br.com.kerubin.api.financeiro.planocontas.entity.planoconta;
 
+import javax.inject.Inject;
 import org.springframework.stereotype.Component;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
+import br.com.kerubin.api.financeiro.planocontas.ObjectMapper;
 
 @Component
 public class PlanoContaDTOConverter {
-	private final ModelMapper mapper;
+	@Inject
 
-	public PlanoContaDTOConverter() {
-		mapper = new ModelMapper();
-		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
-		
-		
-	}
-
+	private ObjectMapper mapper;
 
 	public PlanoConta convertEntityToDto(PlanoContaEntity entity) {
 		PlanoConta dto = null;

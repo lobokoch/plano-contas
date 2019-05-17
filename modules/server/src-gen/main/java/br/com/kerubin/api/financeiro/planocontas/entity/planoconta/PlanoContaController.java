@@ -90,5 +90,17 @@ public class PlanoContaController {
 	}
 	
 	
+	@GetMapping("/planoContaCodigoAutoComplete")
+	public Collection<PlanoContaCodigoAutoComplete> planoContaCodigoAutoComplete(@RequestParam("query") String query) {
+		Collection<PlanoContaCodigoAutoComplete> result = planoContaService.planoContaCodigoAutoComplete(query);
+		return result;
+	}
+	
+	@GetMapping("/planoContaDescricaoAutoComplete")
+	public Collection<PlanoContaDescricaoAutoComplete> planoContaDescricaoAutoComplete(@RequestParam("query") String query) {
+		Collection<PlanoContaDescricaoAutoComplete> result = planoContaService.planoContaDescricaoAutoComplete(query);
+		return result;
+	}
+	
 	
 }

@@ -1,12 +1,8 @@
 package br.com.kerubin.api.financeiro.planocontas.entity.planoconta;
 
 
-public interface PlanoContaAutoComplete {
+public interface PlanoContaCodigoAutoComplete {
 
-	java.util.UUID getId();
-	
 	String getCodigo();
-	
-	String getDescricao();
 
 }

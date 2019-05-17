@@ -26,7 +26,7 @@ public class PlanoContasApplication {
 	}
 	
 	private static void init() {
-		ServiceContext.setDomain(FinanceiroPlanoContasConstants.DOMAIN);
-		ServiceContext.setService(FinanceiroPlanoContasConstants.SERVICE);
+		ServiceContext.setDefaultDomain(FinanceiroPlanoContasConstants.DOMAIN);
+		ServiceContext.setDefaultService(FinanceiroPlanoContasConstants.SERVICE);
 	}
 }

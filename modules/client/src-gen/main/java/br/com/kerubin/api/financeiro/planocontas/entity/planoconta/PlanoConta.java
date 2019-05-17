@@ -1,27 +1,30 @@
 package br.com.kerubin.api.financeiro.planocontas.entity.planoconta;
 
 import javax.validation.constraints.NotBlank;
-import br.com.kerubin.api.financeiro.planocontas.entity.planoconta.PlanoContaLookupResult;
 import javax.validation.constraints.NotNull;
-import br.com.kerubin.api.financeiro.planocontas.PlanoContaKind;
+import br.com.kerubin.api.financeiro.planocontas.TipoPlanoContaFinanceiro;
+import br.com.kerubin.api.financeiro.planocontas.TipoReceitaDespesa;
+import br.com.kerubin.api.financeiro.planocontas.entity.planoconta.PlanoContaLookupResult;
 
 public class PlanoConta {
 
 	private java.util.UUID id;
 	
 	@NotBlank(message="'Código' é obrigatório.")
-	private String code;
+	private String codigo;
 	
 	@NotBlank(message="'Descrição' é obrigatório.")
-	private String description;
+	private String descricao;
 	
-	private PlanoContaLookupResult parentPlanoConta;
+	@NotNull(message="'Tipo Financeiro' é obrigatório.")
+	private TipoPlanoContaFinanceiro tipoFinanceiro;
+	
+	private TipoReceitaDespesa tipoReceitaDespesa;
+	
+	private PlanoContaLookupResult planoContaPai;
 	
 	@NotNull(message="'Ativo' é obrigatório.")
-	private Boolean active;
-	
-	@NotNull(message="'Tipo da conta' é obrigatório.")
-	private PlanoContaKind kind;
+	private Boolean ativo = true;
 	
 	private String createdBy;
 	
@@ -35,24 +38,28 @@ public class PlanoConta {
 		return id;
 	}
 	
-	public String getCode() {
-		return code;
+	public String getCodigo() {
+		return codigo;
 	}
 	
-	public String getDescription() {
-		return description;
+	public String getDescricao() {
+		return descricao;
 	}
 	
-	public PlanoContaLookupResult getParentPlanoConta() {
-		return parentPlanoConta;
+	public TipoPlanoContaFinanceiro getTipoFinanceiro() {
+		return tipoFinanceiro;
 	}
 	
-	public Boolean getActive() {
-		return active;
+	public TipoReceitaDespesa getTipoReceitaDespesa() {
+		return tipoReceitaDespesa;
 	}
 	
-	public PlanoContaKind getKind() {
-		return kind;
+	public PlanoContaLookupResult getPlanoContaPai() {
+		return planoContaPai;
+	}
+	
+	public Boolean getAtivo() {
+		return ativo;
 	}
 	
 	public String getCreatedBy() {
@@ -75,24 +82,28 @@ public class PlanoConta {
 		this.id = id;
 	}
 	
-	public void setCode(String code) {
-		this.code = code;
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 	
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 	
-	public void setParentPlanoConta(PlanoContaLookupResult parentPlanoConta) {
-		this.parentPlanoConta = parentPlanoConta;
+	public void setTipoFinanceiro(TipoPlanoContaFinanceiro tipoFinanceiro) {
+		this.tipoFinanceiro = tipoFinanceiro;
 	}
 	
-	public void setActive(Boolean active) {
-		this.active = active;
+	public void setTipoReceitaDespesa(TipoReceitaDespesa tipoReceitaDespesa) {
+		this.tipoReceitaDespesa = tipoReceitaDespesa;
 	}
 	
-	public void setKind(PlanoContaKind kind) {
-		this.kind = kind;
+	public void setPlanoContaPai(PlanoContaLookupResult planoContaPai) {
+		this.planoContaPai = planoContaPai;
+	}
+	
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 	
 	public void setCreatedBy(String createdBy) {
