@@ -1,24 +1,36 @@
 package br.com.kerubin.api.financeiro.planocontas.service;
 
-import static br.com.kerubin.api.financeiro.planocontas.core.PlanoContaUtils.*;
-import static br.com.kerubin.api.financeiro.planocontas.core.Utils.*;
+import static br.com.kerubin.api.financeiro.planocontas.core.PlanoContaUtils.getGruposAsString;
+import static br.com.kerubin.api.financeiro.planocontas.core.Utils.joinStringsAsCamelCase;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+
+import javax.inject.Inject;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import br.com.kerubin.api.financeiro.planocontas.entity.planoconta.PlanoContaEntity;
 import br.com.kerubin.api.financeiro.planocontas.entity.planoconta.PlanoContaServiceImpl;
+import br.com.kerubin.api.financeiro.planocontas.validator.PlanoContaValidator;
 
 @Primary
 @Service
 public class PlanoContaServiceExtImpl extends PlanoContaServiceImpl {
 	
+	/*@Inject
+	private PlanoContaRepository planoContaRepository;*/
+	
+	@Inject
+	private PlanoContaValidator planoContaValidator;
+	
 	@Override
 	public PlanoContaEntity create(PlanoContaEntity planoContaEntity) {
+		
+		planoContaValidator.validate(planoContaEntity);
+		
 		ajustarCaixaCodigoConta(planoContaEntity);
 		
 		return super.create(planoContaEntity);
@@ -37,6 +49,7 @@ public class PlanoContaServiceExtImpl extends PlanoContaServiceImpl {
 	
 	@Override
 	public PlanoContaEntity update(UUID id, PlanoContaEntity planoContaEntity) {
+		planoContaValidator.validate(planoContaEntity);
 		ajustarCaixaCodigoConta(planoContaEntity);
 		
 		return super.update(id, planoContaEntity);

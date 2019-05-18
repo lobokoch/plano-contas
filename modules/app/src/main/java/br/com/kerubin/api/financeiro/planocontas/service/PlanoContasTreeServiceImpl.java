@@ -2,6 +2,7 @@ package br.com.kerubin.api.financeiro.planocontas.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -9,7 +10,9 @@ import javax.persistence.EntityManager;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import br.com.kerubin.api.financeiro.planocontas.entity.planoconta.PlanoContaEntity;
@@ -24,7 +27,7 @@ public class PlanoContasTreeServiceImpl implements PlanoContasTreeService {
 	
 	@Transactional(readOnly = true)
 	@Override
-	public List<PlanoContaTreeNode> loadItems() {
+	public List<PlanoContaTreeNode> loadTree() {
 		QPlanoContaEntity qPlanoContaEntity = QPlanoContaEntity.planoContaEntity;
 		JPAQueryFactory queryFactory = new JPAQueryFactory(em);
 		
@@ -49,7 +52,7 @@ public class PlanoContasTreeServiceImpl implements PlanoContasTreeService {
 		
 		parents.forEach(parentEntity -> {
 			String label = parentEntity.getCodigo() + " - " + parentEntity.getDescricao();
-			PlanoContaTreeNode node = new PlanoContaTreeNode(parentEntity.getId().toString(), label);
+			PlanoContaTreeNode node = new PlanoContaTreeNode(parentEntity.getId().toString(), label, parentEntity.getCodigo());
 			nodes.add(node);
 			
 			loadChildNodes(node, parentEntity, childEntities);
@@ -69,12 +72,40 @@ public class PlanoContasTreeServiceImpl implements PlanoContasTreeService {
 		
 		childs.forEach(childEntity -> {
 			String label = childEntity.getCodigo() + " - " + childEntity.getDescricao();
-			PlanoContaTreeNode childNode = new PlanoContaTreeNode(childEntity.getId().toString(), label);
+			PlanoContaTreeNode childNode = new PlanoContaTreeNode(childEntity.getId().toString(), label, childEntity.getCodigo());
 			parentNode.addNode(childNode);
 			
 			loadChildNodes(childNode, childEntity, entities);
 		});
 		
+	}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public PlanoContaTreeNode loadNode(UUID id) {
+		QPlanoContaEntity qPlanoContaEntity = QPlanoContaEntity.planoContaEntity;
+		JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+		
+		
+		List<PlanoContaEntity> entities = queryFactory
+			.selectFrom(qPlanoContaEntity)
+			.where(qPlanoContaEntity.codigo.startsWithIgnoreCase(
+					JPAExpressions.select(qPlanoContaEntity.codigo).from(qPlanoContaEntity).where(qPlanoContaEntity.id.eq(id))
+			))
+			.orderBy(qPlanoContaEntity.codigo.asc())
+			.fetch();
+		
+		PlanoContaTreeNode node = null;
+		if (!CollectionUtils.isEmpty(entities)) {
+			PlanoContaEntity parentEntity = entities.get(0);
+			String label = parentEntity.getCodigo() + " - " + parentEntity.getDescricao();
+			node = new PlanoContaTreeNode(parentEntity.getId().toString(), label, parentEntity.getCodigo());
+
+			List<PlanoContaEntity> childs = entities.stream().skip(1).collect(Collectors.toList());
+			loadChildNodes(node, parentEntity, childs);
+		}
+		
+		return node;
 	}
 
 }

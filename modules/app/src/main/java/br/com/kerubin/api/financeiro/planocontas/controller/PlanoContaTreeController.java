@@ -1,6 +1,7 @@
 package br.com.kerubin.api.financeiro.planocontas.controller;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -22,9 +23,18 @@ public class PlanoContaTreeController {
 	@GetMapping("/getPlanoContasTree")
 	public Collection<PlanoContaTreeNode> getPlanoContasTree(@RequestParam("query") String query) {
 		
-		Collection<PlanoContaTreeNode> nodes = planoContasTreeService.loadItems();
+		Collection<PlanoContaTreeNode> tree = planoContasTreeService.loadTree();
 		
-		return nodes;
+		return tree;
+	}
+	
+	@GetMapping("/getPlanoContasNode")
+	public PlanoContaTreeNode getPlanoContasNode(@RequestParam("id") String idStr) {
+		
+		UUID id = UUID.fromString(idStr);
+		PlanoContaTreeNode node = planoContasTreeService.loadNode(id);
+		
+		return node;
 	}
 
 }
