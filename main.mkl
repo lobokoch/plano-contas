@@ -9,7 +9,8 @@ service plano_contas {
 	}
 	
 	@label("Plano de Contas")
-	@auditing	
+	@auditing
+	@baseRepository
 	entity PlanoConta {
 		
 		codigo: string
@@ -40,6 +41,12 @@ service plano_contas {
 		label: "Ativo"
 		web(styleClass: "ui-md-1")
 		listFilter(isNotNull_isNull: "Ativo;Inativo" default: "isNotNull")
+		
+		/*repositoryMethod {
+			imports: ["import java.util.Optional;", "import java.util.UUID;"]
+			query: "select * from PlanoConta"
+			method: ["Optional<PlanoConta> findByCodigoAndIdNot(String codigo, UUID id);"]
+		}*/
 		
 	}
 	

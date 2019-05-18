@@ -17,7 +17,7 @@ import java.util.Collection;
 public class PlanoContaServiceImpl implements PlanoContaService {
 	
 	@Autowired
-	private PlanoContaRepository planoContaRepository;
+	private PlanoContaBaseRepository planoContaBaseRepository;
 	
 	@Autowired
 	private PlanoContaListFilterPredicate planoContaListFilterPredicate;
@@ -26,7 +26,7 @@ public class PlanoContaServiceImpl implements PlanoContaService {
 	
 	@Transactional
 	public PlanoContaEntity create(PlanoContaEntity planoContaEntity) {
-		return planoContaRepository.save(planoContaEntity);
+		return planoContaBaseRepository.save(planoContaEntity);
 	}
 	
 	@Transactional(readOnly = true)
@@ -38,14 +38,14 @@ public class PlanoContaServiceImpl implements PlanoContaService {
 	public PlanoContaEntity update(java.util.UUID id, PlanoContaEntity planoContaEntity) {
 		PlanoContaEntity entity = getPlanoContaEntity(id);
 		BeanUtils.copyProperties(planoContaEntity, entity, "id");
-		entity = planoContaRepository.save(entity);
+		entity = planoContaBaseRepository.save(entity);
 		
 		return entity;
 	}
 	
 	@Transactional
 	public void delete(java.util.UUID id) {
-		planoContaRepository.deleteById(id);
+		planoContaBaseRepository.deleteById(id);
 		
 	}
 	
@@ -54,13 +54,13 @@ public class PlanoContaServiceImpl implements PlanoContaService {
 	public Page<PlanoContaEntity> list(PlanoContaListFilter planoContaListFilter, Pageable pageable) {
 		Predicate predicate = planoContaListFilterPredicate.mountAndGetPredicate(planoContaListFilter);
 		
-		Page<PlanoContaEntity> resultPage = planoContaRepository.findAll(predicate, pageable);
+		Page<PlanoContaEntity> resultPage = planoContaBaseRepository.findAll(predicate, pageable);
 		return resultPage;
 	}
 	
 	@Transactional(readOnly = true)
 	private PlanoContaEntity getPlanoContaEntity(java.util.UUID id) {
-		Optional<PlanoContaEntity> planoContaEntity = planoContaRepository.findById(id);
+		Optional<PlanoContaEntity> planoContaEntity = planoContaBaseRepository.findById(id);
 		if (!planoContaEntity.isPresent()) {
 			throw new IllegalArgumentException("PlanoConta not found:" + id.toString());
 		}
@@ -69,19 +69,19 @@ public class PlanoContaServiceImpl implements PlanoContaService {
 	
 	@Transactional(readOnly = true)
 	public Collection<PlanoContaAutoComplete> autoComplete(String query) {
-		Collection<PlanoContaAutoComplete> result = planoContaRepository.autoComplete(query);
+		Collection<PlanoContaAutoComplete> result = planoContaBaseRepository.autoComplete(query);
 		return result;
 	}
 	
 	@Transactional(readOnly = true)
 	public Collection<PlanoContaCodigoAutoComplete> planoContaCodigoAutoComplete(String query) {
-		Collection<PlanoContaCodigoAutoComplete> result = planoContaRepository.planoContaCodigoAutoComplete(query);
+		Collection<PlanoContaCodigoAutoComplete> result = planoContaBaseRepository.planoContaCodigoAutoComplete(query);
 		return result;
 	}
 	
 	@Transactional(readOnly = true)
 	public Collection<PlanoContaDescricaoAutoComplete> planoContaDescricaoAutoComplete(String query) {
-		Collection<PlanoContaDescricaoAutoComplete> result = planoContaRepository.planoContaDescricaoAutoComplete(query);
+		Collection<PlanoContaDescricaoAutoComplete> result = planoContaBaseRepository.planoContaDescricaoAutoComplete(query);
 		return result;
 	}
 	

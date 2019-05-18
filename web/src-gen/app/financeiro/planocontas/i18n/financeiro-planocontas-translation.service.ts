@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import * as localTranslations from 'src/app/financeiro/planocontas/i18n/pt-br.json';
 
 @Injectable()
-export class FinanceiroPlano_contasTranslationService {
+export class FinanceiroPlanoContasTranslationService {
 
   // translations: Object;
 
@@ -25,7 +25,7 @@ export class FinanceiroPlano_contasTranslationService {
   public getTranslation(key: string): string {
       if (localTranslations) {
         const translation = (<any>localTranslations).default[key];
-        if (translation) {
+        if (translation !== null) {
           return translation;
         }
       }

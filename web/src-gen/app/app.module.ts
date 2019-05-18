@@ -40,7 +40,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './security/auth.guard';
 
 // Kerubin begin
-import { FinanceiroPlano_contasTranslationService } from './financeiro/planocontas/i18n/financeiro-planocontas-translation.service';
+
+import { PlanoContaComponent } from './financeiro/planocontas/planoconta/crud-planoconta.component';
+import { PlanoContaListComponent } from './financeiro/planocontas/planoconta/list-planoconta.component';
+import { PlanoContaService } from './financeiro/planocontas/planoconta/planoconta.service';
+import { FinanceiroPlanoContasTranslationService } from './financeiro/planocontas/i18n/financeiro-planocontas-translation.service';
 
 import { NavbarComponent } from './navbar/navbar.component';
 import { LoginComponent } from './security/login/login.component';
@@ -71,6 +75,10 @@ const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   
 	// Kerubin Begin
+	
+	{ path: 'planoconta/novo', component: PlanoContaComponent, canActivate: [AuthGuard] },
+	{ path: 'planoconta/:id', component: PlanoContaComponent, canActivate: [AuthGuard] },
+	{ path: 'planoconta', component: PlanoContaListComponent, canActivate: [AuthGuard] },
 	// Kerubin Begin
   
   { path: 'mainmenu', component: ContaPagarListComponent, canActivate: [AuthGuard] },
@@ -85,6 +93,9 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     // Kerubin Begin
+    
+    PlanoContaComponent,
+    PlanoContaListComponent,
     NavbarComponent,
     LoginComponent,
     NewAccountComponent,
@@ -128,7 +139,8 @@ const routes: Routes = [
   ],
   providers: [
   	// Kerubin Begin
-  	FinanceiroPlano_contasTranslationService,
+  	PlanoContaService,
+  	FinanceiroPlanoContasTranslationService,
   	UserAccountService,
   	// Kerubin End
   	

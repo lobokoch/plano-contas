@@ -4,7 +4,7 @@ import { LogoutService } from '../security/logout.service';
 import { MessageHandlerService } from '../core/message-handler.service';
 import { Router } from '@angular/router';
 
-// import { FinanceiroPlano_contasTranslationService } from './../i18n/financeiro-planocontas-translation.service';
+// import { FinanceiroPlanoContasTranslationService } from './../i18n/financeiro-planocontas-translation.service';
 
 @Component({
   selector: 'app-navbar',
@@ -19,7 +19,7 @@ export class NavbarComponent implements OnInit {
 	private logoutService: LogoutService,
 	private messageHandler: MessageHandlerService,
 	private router: Router
-  	// private financeiroPlano_contasTranslationService: FinanceiroPlano_contasTranslationService
+  	// private financeiroPlanoContasTranslationService: FinanceiroPlanoContasTranslationService
   ) { }
 
   ngOnInit() {
@@ -28,7 +28,7 @@ export class NavbarComponent implements OnInit {
   /* 
   // TODO: temporário, só para testes.
   getTranslation(key: string): string {
-  	const value = this.financeiroPlano_contasTranslationService.getTranslation(key);
+  	const value = this.financeiroPlanoContasTranslationService.getTranslation(key);
   	return value;
   	
   	// const result = key.substring(key.lastIndexOf('_') + 1);

@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Component;
 
 import br.com.kerubin.api.financeiro.planocontas.entity.planoconta.PlanoContaEntity;
-import br.com.kerubin.api.financeiro.planocontas.entity.planoconta.PlanoContaRepository;
+import br.com.kerubin.api.financeiro.planocontas.repository.PlanoContaRepository;
 
 @Component
 public class PlanoContaValidatorImpl implements PlanoContaValidator {
@@ -18,7 +18,7 @@ public class PlanoContaValidatorImpl implements PlanoContaValidator {
 
 	@Override
 	public void validate(PlanoContaEntity planoContaEntity) {
-		// TODO gerar isso via MKL: Optional<PlanoContaEntity> findByCodigoAndIdNot(String codigo, UUID id);
+		/* TODO: tirar a validação por enquanto para flexibilidade.
 		UUID id = planoContaEntity.getId() != null ? planoContaEntity.getId() : UUID.randomUUID(); // When is new, id will be null and get an exception due this.
 		Optional<PlanoContaEntity> other = planoContaRepository.findByCodigoAndIdNot(planoContaEntity.getCodigo(), id);
 		if (other.isPresent()) {
@@ -27,7 +27,7 @@ public class PlanoContaValidatorImpl implements PlanoContaValidator {
 			String itemB = othetEntity.getCodigo() + " - " + othetEntity.getDescricao();
 			throw new IllegalStateException("Não é possível gravar o item \"" + itemA + "\", devido a já existir o item \"" + itemB + "\" com o mesmo código.");
 		}
-		
+		*/
 	}
 	
 	
