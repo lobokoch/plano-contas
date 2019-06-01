@@ -1,6 +1,14 @@
+/**********************************************************************************************
+Code generated with MKL Plug-in version: 3.5.1
+Code generated at time stamp: 2019-06-01T15:26:43.967
+Copyright: Kerubin - logokoch@gmail.com
+
+WARNING: DO NOT CHANGE THIS CODE BECAUSE THE CHANGES WILL BE LOST IN THE NEXT CODE GENERATION.
+***********************************************************************************************/
+
 
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {MessageService} from 'primeng/api';
 
@@ -53,15 +61,32 @@ export class PlanoContaComponent implements OnInit {
 	    }.bind(this), 1);
 	}
 	
-	save(form: FormControl) {
+	validateAllFormFields(form: FormGroup) {
+	    Object.keys(form.controls).forEach(field => {
+	      const control = form.get(field);
+	
+	      if (control instanceof FormControl) {
+	        control.markAsDirty({ onlySelf: true });
+	      } else if (control instanceof FormGroup) {
+	        this.validateAllFormFields(control);
+	      }
+	    });
+	}
+	
+	save(form: FormGroup) {
+		if (!form.valid) {
+	      this.validateAllFormFields(form);
+	      return;
+	    }
+		    
 	    if (this.isEditing) {
-	      this.update(form);
+	      this.update();
 	    } else {
-	      this.create(form);
+	      this.create();
 	    }
 	}
 	
-	create(form: FormControl) {
+	create() {
 	    this.planoContaService.create(this.planoConta)
 	    .then((planoConta) => {
 	      this.planoConta = planoConta;
@@ -72,7 +97,7 @@ export class PlanoContaComponent implements OnInit {
 	    });
 	}
 	
-	update(form: FormControl) {
+	update() {
 	    this.planoContaService.update(this.planoConta)
 	    .then((planoConta) => {
 	      this.planoConta = planoConta;
@@ -94,6 +119,8 @@ export class PlanoContaComponent implements OnInit {
 	get isEditing() {
 	    return Boolean(this.planoConta.id);
 	}
+	
+	
 	
 	planoContaPlanoContaPaiAutoCompleteClear(event) {
 		// The autoComplete value has been reseted

@@ -1,0 +1,15 @@
+{
+	label: 'Financeiro',
+	icon: 'pi pi-pw',
+	items: [
+		
+		{
+			label: 'Plano de contas',
+			icon: 'pi pi-fw ',
+			items: [
+				{ label: 'Plano de contas', icon: 'pi pi-fw', routerLink: '/planoconta' }
+			]
+		}
+		
+	]
+}

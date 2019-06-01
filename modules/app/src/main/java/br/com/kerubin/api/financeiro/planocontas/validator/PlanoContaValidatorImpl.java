@@ -1,20 +1,14 @@
 package br.com.kerubin.api.financeiro.planocontas.validator;
 
-import java.util.Optional;
-import java.util.UUID;
-
-import javax.inject.Inject;
-
 import org.springframework.stereotype.Component;
 
 import br.com.kerubin.api.financeiro.planocontas.entity.planoconta.PlanoContaEntity;
-import br.com.kerubin.api.financeiro.planocontas.repository.PlanoContaRepository;
 
 @Component
 public class PlanoContaValidatorImpl implements PlanoContaValidator {
 	
-	@Inject
-	private PlanoContaRepository planoContaRepository;
+	/*@Inject
+	private PlanoContaRepository planoContaRepository;*/
 
 	@Override
 	public void validate(PlanoContaEntity planoContaEntity) {

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.kerubin.api</groupId>
 	<artifactId>financeiro-planocontas-parent</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>pom</packaging>
 	<name>financeiro-planocontas-parent</name>
 	<description>plano_contas</description>
@@ -29,7 +29,7 @@
 		<commons.lang.version>3.8.1</commons.lang.version>
 		<database.core.version>1.0.0</database.core.version>
 		<flyway.core.version>5.2.4</flyway.core.version>
-		<kerubin.messaging.core.version>0.0.1-SNAPSHOT</kerubin.messaging.core.version>
+		<kerubin.messaging.core.version>1.0.0</kerubin.messaging.core.version>
 		<modelmapper.version>1.1.0</modelmapper.version>
 		<build.helper.maven.plugin.version>3.0.0</build.helper.maven.plugin.version>
 		<apt.maven.plugin.version>1.1.1</apt.maven.plugin.version>

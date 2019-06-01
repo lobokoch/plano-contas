@@ -1,3 +1,11 @@
+/**********************************************************************************************
+Code generated with MKL Plug-in version: 3.5.1
+Code generated at time stamp: 2019-06-01T15:26:43.922
+Copyright: Kerubin - logokoch@gmail.com
+
+WARNING: DO NOT CHANGE THIS CODE BECAUSE THE CHANGES WILL BE LOST IN THE NEXT CODE GENERATION.
+***********************************************************************************************/
+
 package br.com.kerubin.api.financeiro.planocontas;
 
 import java.beans.PropertyDescriptor;
@@ -5,6 +13,7 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Date;
@@ -13,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+
+import javax.persistence.Id;
 
 import org.hibernate.Hibernate;
 import org.hibernate.collection.spi.PersistentCollection;
@@ -27,8 +38,8 @@ public class ObjectMapper {
 	
 	private static Logger log = LoggerFactory.getLogger(ObjectMapper.class);
 	
-	private static final List<?> DSL_PRIMITIVE_TYPES = Arrays.asList(LocalDate.class, LocalTime.class, Date.class, 
-            Instant.class, String.class, Long.class, 
+	private static final List<?> DSL_PRIMITIVE_TYPES = Arrays.asList(LocalDate.class, LocalTime.class, LocalDateTime.class,
+			Date.class, Instant.class, String.class, Long.class, 
             Boolean.class, UUID.class, BigDecimal.class, Double.class);
 	
 	
@@ -90,24 +101,40 @@ public class ObjectMapper {
                         }
                     }
                     else { // Is another entity reference, call recursive if needed.
-                    	Object sourceFieldValue = getFieldValue(source, sourceField);
-                    	if (isProxy(sourceFieldValue)) {
-                    		sourceFieldValue = Hibernate.unproxy(sourceFieldValue);
-                    	}
-                    	
-                        if (sourceFieldValue != null) {
-                            Object targetFieldValue = null;
-                            if (visited.containsKey(sourceFieldValue)) {
-                                targetFieldValue = visited.get(sourceFieldValue);
-                            }
-                            else {
-                                targetFieldValue = BeanUtils.instantiateClass(targetFieldType);
-                                copyProperties(sourceFieldValue, targetFieldValue, visited);
-                            }
-                            
-                            setFieldValue(target, targetField, targetFieldValue);
-                        }
-                    }
+						Object sourceFieldValue = getFieldValue(source, sourceField);
+						if (isProxy(sourceFieldValue)) {
+							sourceFieldValue = Hibernate.unproxy(sourceFieldValue);
+						}
+						
+					    if (sourceFieldValue != null) {
+					        Object targetFieldValue = null;
+					        if (visited.containsKey(sourceFieldValue)) {
+					            targetFieldValue = visited.get(sourceFieldValue);
+					        }
+					        else {
+					        	
+					            targetFieldValue = BeanUtils.instantiateClass(targetFieldType);
+					            
+					            // Source field can has an entity name, but with uuid value instead of an entity object
+					            // Also, source field and target field can be objects with field names matching, but with different class names.
+					            boolean isSourceFieldAnEntityWithOnlyId = sourceFieldType.equals(UUID.class) && !targetFieldType.equals(UUID.class);
+					            
+					            if (!isSourceFieldAnEntityWithOnlyId) { // both should be objets
+					            	copyProperties(sourceFieldValue, targetFieldValue, visited);
+					            }
+					            else {
+				            		Field targetFieldValueIdField = getEntityIdField(targetFieldValue.getClass());
+				            		if (targetFieldValueIdField == null) {
+				            			throw new IllegalStateException(targetField.getClass().getName() + " should be an entity class with a field annoted with @Id.");
+				            		}
+				            		setFieldValue(targetFieldValue, targetFieldValueIdField, sourceFieldValue);
+					            }
+					            
+					        }
+					        
+					        setFieldValue(target, targetField, targetFieldValue);
+					    }
+					}
                 } catch (Exception e) {
                 	throw new IllegalStateException("Error copying properties from '" + source.getClass().getName() + "' to '" + target.getClass().getName() + "'.", e);
                 }
@@ -128,6 +155,16 @@ public class ObjectMapper {
         }
         return false;
     }
+    
+    private Field getEntityIdField(Class<?> entityClass) {
+		Field idField = Arrays.asList(entityClass.getDeclaredFields())
+				.stream()
+				.filter(field -> field.isAnnotationPresent(Id.class))
+				.findFirst()
+				.orElse(null);
+		
+		return idField;
+	}
 
     
     private void setFieldValue(Object obj, Field field, Object value) {

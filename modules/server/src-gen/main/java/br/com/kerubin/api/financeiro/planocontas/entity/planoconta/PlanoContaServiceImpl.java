@@ -1,3 +1,11 @@
+/**********************************************************************************************
+Code generated with MKL Plug-in version: 3.5.1
+Code generated at time stamp: 2019-06-01T15:26:43.922
+Copyright: Kerubin - logokoch@gmail.com
+
+WARNING: DO NOT CHANGE THIS CODE BECAUSE THE CHANGES WILL BE LOST IN THE NEXT CODE GENERATION.
+***********************************************************************************************/
+
 package br.com.kerubin.api.financeiro.planocontas.entity.planoconta;		
 
 import org.springframework.beans.BeanUtils;
@@ -11,10 +19,17 @@ import com.querydsl.core.types.Predicate;
 
 import java.util.Optional;
 import java.util.Collection;
+import br.com.kerubin.api.messaging.core.DomainEntityEventsPublisher;
+import br.com.kerubin.api.messaging.core.DomainEvent;
+import br.com.kerubin.api.messaging.core.DomainEventEnvelope;
+import br.com.kerubin.api.messaging.core.DomainEventEnvelopeBuilder;
+import br.com.kerubin.api.database.core.ServiceContext;
+import br.com.kerubin.api.financeiro.planocontas.FinanceiroPlanoContasConstants;
 
  
 @Service
 public class PlanoContaServiceImpl implements PlanoContaService {
+	private static final String ENTITY_KEY = "entity.PlanoConta";
 	
 	@Autowired
 	private PlanoContaBaseRepository planoContaBaseRepository;
@@ -22,11 +37,15 @@ public class PlanoContaServiceImpl implements PlanoContaService {
 	@Autowired
 	private PlanoContaListFilterPredicate planoContaListFilterPredicate;
 	
+	@Autowired
+	DomainEntityEventsPublisher publisher;
 	
 	
 	@Transactional
 	public PlanoContaEntity create(PlanoContaEntity planoContaEntity) {
-		return planoContaBaseRepository.save(planoContaEntity);
+		PlanoContaEntity entity = planoContaBaseRepository.save(planoContaEntity);
+		publishEvent(entity, PlanoContaEvent.PLANO_CONTA_CREATED);
+		return entity;
 	}
 	
 	@Transactional(readOnly = true)
@@ -40,6 +59,8 @@ public class PlanoContaServiceImpl implements PlanoContaService {
 		BeanUtils.copyProperties(planoContaEntity, entity, "id");
 		entity = planoContaBaseRepository.save(entity);
 		
+		publishEvent(entity, PlanoContaEvent.PLANO_CONTA_UPDATED);
+		
 		return entity;
 	}
 	
@@ -47,8 +68,31 @@ public class PlanoContaServiceImpl implements PlanoContaService {
 	public void delete(java.util.UUID id) {
 		planoContaBaseRepository.deleteById(id);
 		
+		PlanoContaEntity entity = new PlanoContaEntity();
+		entity.setId(id);
+		publishEvent(entity, PlanoContaEvent.PLANO_CONTA_DELETED);
 	}
 	
+	private void publishEvent(PlanoContaEntity entity, String eventName) {
+		DomainEvent event = new PlanoContaEvent(entity.getId(), 
+			entity.getCodigo(), 
+			entity.getDescricao(), 
+			entity.getTipoFinanceiro(), 
+			entity.getTipoReceitaDespesa(), 
+			entity.getPlanoContaPai() != null ? entity.getPlanoContaPai().getId() : null, 
+			entity.getAtivo());
+		
+		DomainEventEnvelope<DomainEvent> envelope = DomainEventEnvelopeBuilder
+				.getBuilder(eventName, event)
+				.domain(FinanceiroPlanoContasConstants.DOMAIN)
+				.service(FinanceiroPlanoContasConstants.SERVICE)
+				.key(ENTITY_KEY)
+				.tenant(ServiceContext.getTenant())
+				.user(ServiceContext.getUser())
+				.build();
+		
+		publisher.publish(envelope);
+	}
 	
 	@Transactional(readOnly = true)
 	public Page<PlanoContaEntity> list(PlanoContaListFilter planoContaListFilter, Pageable pageable) {

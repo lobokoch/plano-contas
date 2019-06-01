@@ -1,55 +1,61 @@
+@label("Financeiro")
 domain financeiro
-service plano_contas {
+
+@label("Plano de contas")
+service plano_contas { //xxxx
 	
 	config {
 		groupId: "br.com.kerubin.api"
-		version: "1.0.0-SNAPSHOT"
+		version: "1.0.0"
 		cloudConfigUri: "http://localhost:9091"
-		servicePort: 9010
+		servicePort: 0
+		
+		messagingCore {version:"1.0.0"}
+		databaseCore {version:"1.0.0"}
 	}
 	
-	@label("Plano de Contas")
+	@publishEvents
 	@auditing
 	@baseRepository
+	@label("Plano de contas")
 	entity PlanoConta {
 		
 		codigo: string
 		label: "Código"
+		publishedInEvents
 		autoComplete
 		web(styleClass: "ui-md-2")
 		listFilter(many: "Códigos")
 		
 		descricao: string
 		label: "Descrição"
+		publishedInEvents
 		autoComplete
 		web(styleClass: "ui-md-10")		
 		listFilter(many: "Descrições")
 		
 		tipoFinanceiro: TipoPlanoContaFinanceiro
-		label: "Tipo Financeiro"
+		publishedInEvents
 		web(styleClass: "ui-md-2")
 		
 		tipoReceitaDespesa: TipoReceitaDespesa?
-		label: "Tipo Receita/Despesa"
+		publishedInEvents
 		web(styleClass: "ui-md-2")
 		
 		planoContaPai: refers PlanoConta? manyToOne
-		label: "Plano de Conta Pai"
+		label: "Plano de conta pai"
+		publishedInEvents
 		web(styleClass: "ui-md-7")
 		
-		ativo: boolean default: true displayTrue: "Sim" displayFalse: "Não"
+		ativo: boolean		
 		label: "Ativo"
+		publishedInEvents
 		web(styleClass: "ui-md-1")
 		listFilter(isNotNull_isNull: "Ativo;Inativo" default: "isNotNull")
 		
-		/*repositoryMethod {
-			imports: ["import java.util.Optional;", "import java.util.UUID;"]
-			query: "select * from PlanoConta"
-			method: ["Optional<PlanoConta> findByCodigoAndIdNot(String codigo, UUID id);"]
-		}*/
-		
 	}
 	
+	@label("Tipo receita/despesa")
 	enum TipoReceitaDespesa {
 		FIXO
 		label: "Fixa"
@@ -58,6 +64,7 @@ service plano_contas {
 		label: "Variável"
 	}
 	
+	@label("Tipo financeiro")
 	enum TipoPlanoContaFinanceiro {
 		RECEITA
 		label: "Receita"

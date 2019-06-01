@@ -8,39 +8,42 @@ WARNING: DO NOT CHANGE THIS CODE BECAUSE THE CHANGES WILL BE LOST IN THE NEXT CO
 
 package br.com.kerubin.api.financeiro.planocontas.entity.planoconta;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import br.com.kerubin.api.messaging.core.DomainEvent;
 import br.com.kerubin.api.financeiro.planocontas.TipoPlanoContaFinanceiro;
 import br.com.kerubin.api.financeiro.planocontas.TipoReceitaDespesa;
-import br.com.kerubin.api.financeiro.planocontas.entity.planoconta.PlanoContaLookupResult;
 
-public class PlanoConta {
-
+public class PlanoContaEvent implements DomainEvent {
+	
+	public static final String PLANO_CONTA_CREATED = "planoContaCreated";
+	public static final String PLANO_CONTA_UPDATED = "planoContaUpdated";
+	public static final String PLANO_CONTA_DELETED = "planoContaDeleted";
 	private java.util.UUID id;
 	
-	@NotBlank(message="'Código' é obrigatório.")
 	private String codigo;
 	
-	@NotBlank(message="'Descrição' é obrigatório.")
 	private String descricao;
 	
-	@NotNull(message="'tipoFinanceiro' é obrigatório.")
 	private TipoPlanoContaFinanceiro tipoFinanceiro;
 	
 	private TipoReceitaDespesa tipoReceitaDespesa;
 	
-	private PlanoContaLookupResult planoContaPai;
+	private java.util.UUID planoContaPai;
 	
-	@NotNull(message="'Ativo' é obrigatório.")
-	private Boolean ativo = true;
+	private Boolean ativo;
 	
-	private String createdBy;
+	public PlanoContaEvent() {
+		
+	}
 	
-	private java.time.LocalDateTime createdDate;
-	
-	private String lastModifiedBy;
-	
-	private java.time.LocalDateTime lastModifiedDate;
+	public PlanoContaEvent(java.util.UUID id, String codigo, String descricao, TipoPlanoContaFinanceiro tipoFinanceiro, TipoReceitaDespesa tipoReceitaDespesa, java.util.UUID planoContaPai, Boolean ativo) {
+		this.id = id;
+		this.codigo = codigo;
+		this.descricao = descricao;
+		this.tipoFinanceiro = tipoFinanceiro;
+		this.tipoReceitaDespesa = tipoReceitaDespesa;
+		this.planoContaPai = planoContaPai;
+		this.ativo = ativo;
+	}
 	
 	public java.util.UUID getId() {
 		return id;
@@ -62,28 +65,12 @@ public class PlanoConta {
 		return tipoReceitaDespesa;
 	}
 	
-	public PlanoContaLookupResult getPlanoContaPai() {
+	public java.util.UUID getPlanoContaPai() {
 		return planoContaPai;
 	}
 	
 	public Boolean getAtivo() {
 		return ativo;
-	}
-	
-	public String getCreatedBy() {
-		return createdBy;
-	}
-	
-	public java.time.LocalDateTime getCreatedDate() {
-		return createdDate;
-	}
-	
-	public String getLastModifiedBy() {
-		return lastModifiedBy;
-	}
-	
-	public java.time.LocalDateTime getLastModifiedDate() {
-		return lastModifiedDate;
 	}
 	
 	public void setId(java.util.UUID id) {
@@ -106,28 +93,12 @@ public class PlanoConta {
 		this.tipoReceitaDespesa = tipoReceitaDespesa;
 	}
 	
-	public void setPlanoContaPai(PlanoContaLookupResult planoContaPai) {
+	public void setPlanoContaPai(java.util.UUID planoContaPai) {
 		this.planoContaPai = planoContaPai;
 	}
 	
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
-	}
-	
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-	
-	public void setCreatedDate(java.time.LocalDateTime createdDate) {
-		this.createdDate = createdDate;
-	}
-	
-	public void setLastModifiedBy(String lastModifiedBy) {
-		this.lastModifiedBy = lastModifiedBy;
-	}
-	
-	public void setLastModifiedDate(java.time.LocalDateTime lastModifiedDate) {
-		this.lastModifiedDate = lastModifiedDate;
 	}
 	
 	@Override
@@ -138,7 +109,7 @@ public class PlanoConta {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PlanoConta other = (PlanoConta) obj;
+		PlanoContaEvent other = (PlanoContaEvent) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

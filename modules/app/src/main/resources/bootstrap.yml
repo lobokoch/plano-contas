@@ -1,6 +1,15 @@
 spring:
   application:
-    name: financeiro-planocontas-app
+    name: financeiro-planocontas
+    
+server:
+  port: ${PORT:0}    
+    
   cloud:
     config:
       uri: http://localhost:9091
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/    
