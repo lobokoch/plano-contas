@@ -2,7 +2,7 @@
 domain financeiro
 
 @label("Plano de contas")
-service plano_contas { //xxxx
+service plano_contas { //xxxxx
 	
 	config {
 		groupId: "br.com.kerubin.api"
