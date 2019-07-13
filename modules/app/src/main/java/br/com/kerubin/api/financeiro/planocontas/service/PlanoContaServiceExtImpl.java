@@ -10,12 +10,16 @@ import java.util.UUID;
 import javax.inject.Inject;
 
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import br.com.kerubin.api.financeiro.planocontas.entity.planoconta.PlanoContaEntity;
 import br.com.kerubin.api.financeiro.planocontas.entity.planoconta.PlanoContaServiceImpl;
+import br.com.kerubin.api.financeiro.planocontas.exception.PlanoContasException;
 import br.com.kerubin.api.financeiro.planocontas.validator.PlanoContaValidator;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Primary
 @Service
 public class PlanoContaServiceExtImpl extends PlanoContaServiceImpl {
@@ -53,6 +57,20 @@ public class PlanoContaServiceExtImpl extends PlanoContaServiceImpl {
 		ajustarCaixaCodigoConta(planoContaEntity);
 		
 		return super.update(id, planoContaEntity);
+	}
+	
+	@Override
+	public void delete(UUID id) {
+		try {
+			super.delete(id);
+		} catch(DataIntegrityViolationException e) {
+			log.error("Error deleting Plano de contas id: " + id + ", error:" + e.getMessage(), e);
+			throw new PlanoContasException("O plano de contas não pode ser excluído devido a estar sendo usado ou possuir filhos.");
+		} catch (Exception e) {
+			log.error("Error deleting Plano de contas id: " + id + ", error:" + e.getMessage(), e);
+			throw new PlanoContasException("Erro ao excluir o plano de contas.");
+		}
+		
 	}
 
 }

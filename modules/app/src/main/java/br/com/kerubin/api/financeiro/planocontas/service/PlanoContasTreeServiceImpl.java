@@ -1,6 +1,9 @@
 package br.com.kerubin.api.financeiro.planocontas.service;
 
+import static br.com.kerubin.api.servicecore.util.CoreUtils.isNotEmpty;
+
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -18,7 +21,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import br.com.kerubin.api.financeiro.planocontas.entity.planoconta.PlanoContaEntity;
 import br.com.kerubin.api.financeiro.planocontas.entity.planoconta.QPlanoContaEntity;
 import br.com.kerubin.api.financeiro.planocontas.model.PlanoContaTreeNode;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class PlanoContasTreeServiceImpl implements PlanoContasTreeService {
 	
@@ -31,11 +36,21 @@ public class PlanoContasTreeServiceImpl implements PlanoContasTreeService {
 		QPlanoContaEntity qPlanoContaEntity = QPlanoContaEntity.planoContaEntity;
 		JPAQueryFactory queryFactory = new JPAQueryFactory(em);
 		
+		// TODO: database can do this for us, but Hibernate does not help.
+		//OrderSpecifier<Integer> order = Expressions.stringTemplate("(replace({0}, '.', ''))", qPlanoContaEntity.codigo).castToNum(Integer.class).asc();
+		
 		List<PlanoContaEntity> entities = queryFactory
 			.selectFrom(qPlanoContaEntity)
 			.where(qPlanoContaEntity.ativo.eq(true))
 			.orderBy(qPlanoContaEntity.codigo.asc())
+			//.orderBy(order)
 			.fetch();
+		
+		entities = entities.stream()
+			.sorted(Comparator.comparingInt(this::planoContaCodigoToInt))
+			.collect(Collectors.toList());
+		
+		//entities = entities.stream().sorted(Comparator.comparing(PlanoContaEntity::getCodigo)).collect(Collectors.toList());
 			
 		List<PlanoContaEntity> parents = entities
 				.stream()
@@ -60,7 +75,7 @@ public class PlanoContasTreeServiceImpl implements PlanoContasTreeService {
 		
 		return nodes;
 	}
-
+	
 	private void loadChildNodes(PlanoContaTreeNode parentNode, PlanoContaEntity parentEntity, List<PlanoContaEntity> entities) {
  		List<PlanoContaEntity> childs = entities.stream()
 				.filter(childEntity -> {
@@ -93,7 +108,12 @@ public class PlanoContasTreeServiceImpl implements PlanoContasTreeService {
 					JPAExpressions.select(qPlanoContaEntity.codigo).from(qPlanoContaEntity).where(qPlanoContaEntity.id.eq(id))
 			))
 			.orderBy(qPlanoContaEntity.codigo.asc())
+			//.orderBy(Expressions.stringTemplate("replace({0}, '.', '')", qPlanoContaEntity.codigo).castToNum(Integer.class).asc())
 			.fetch();
+		
+		entities = entities.stream()
+				.sorted(Comparator.comparingInt(this::planoContaCodigoToInt))
+				.collect(Collectors.toList());
 		
 		PlanoContaTreeNode node = null;
 		if (!CollectionUtils.isEmpty(entities)) {
@@ -106,6 +126,23 @@ public class PlanoContasTreeServiceImpl implements PlanoContasTreeService {
 		}
 		
 		return node;
+	}
+	
+	private int planoContaCodigoToInt(Object planoContaEntityObj) {
+		if (planoContaEntityObj != null && planoContaEntityObj instanceof PlanoContaEntity) {
+			PlanoContaEntity planoContaEntity = (PlanoContaEntity) planoContaEntityObj;
+			String codigo = planoContaEntity.getCodigo();
+			if (isNotEmpty(codigo)) {
+				codigo = codigo.replace(".", "");
+				try {
+					return Integer.parseInt(codigo);
+				} catch(Exception e) {
+					return 0;
+				}
+			}
+		}
+		
+		return 0;
 	}
 
 }

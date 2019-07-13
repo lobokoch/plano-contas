@@ -1,27 +1,41 @@
 package br.com.kerubin.api.financeiro.planocontas.validator;
 
+import javax.inject.Inject;
+
 import org.springframework.stereotype.Component;
 
 import br.com.kerubin.api.financeiro.planocontas.entity.planoconta.PlanoContaEntity;
+import br.com.kerubin.api.financeiro.planocontas.exception.PlanoContasException;
+import br.com.kerubin.api.financeiro.planocontas.repository.PlanoContaRepository;
+import static br.com.kerubin.api.servicecore.util.CoreUtils.*;
 
 @Component
 public class PlanoContaValidatorImpl implements PlanoContaValidator {
 	
-	/*@Inject
-	private PlanoContaRepository planoContaRepository;*/
+	@Inject
+	private PlanoContaRepository planoContaRepository;
 
 	@Override
 	public void validate(PlanoContaEntity planoContaEntity) {
-		/* TODO: tirar a validação por enquanto para flexibilidade.
-		UUID id = planoContaEntity.getId() != null ? planoContaEntity.getId() : UUID.randomUUID(); // When is new, id will be null and get an exception due this.
-		Optional<PlanoContaEntity> other = planoContaRepository.findByCodigoAndIdNot(planoContaEntity.getCodigo(), id);
-		if (other.isPresent()) {
-			PlanoContaEntity othetEntity = other.get();
-			String itemA = planoContaEntity.getCodigo() + " - " + planoContaEntity.getDescricao();
-			String itemB = othetEntity.getCodigo() + " - " + othetEntity.getDescricao();
-			throw new IllegalStateException("Não é possível gravar o item \"" + itemA + "\", devido a já existir o item \"" + itemB + "\" com o mesmo código.");
+		if (isEmpty(planoContaEntity)) {
+			throw new PlanoContasException("O plano de contas deve ser informado.");
 		}
-		*/
+		
+		if (isEmpty(planoContaEntity.getCodigo())) {
+			throw new PlanoContasException("O código do plano de contas deve ser informado.");
+		}
+		
+		if (isEmpty(planoContaEntity.getDescricao())) {
+			throw new PlanoContasException("A descrição do plano de contas deve ser informada.");
+		}
+		
+		if(isNotEmpty(planoContaEntity.getPlanoContaPai())) {
+			PlanoContaEntity planoContaEntityPai = planoContaRepository.findById(planoContaEntity.getPlanoContaPai().getId()).orElse(null);
+			if (!planoContaEntityPai.getTipoFinanceiro().equals(planoContaEntity.getTipoFinanceiro())) {
+				throw new PlanoContasException("O \"Tipo financeiro\" do plano de contas deve ser o mesmo do plano de contas pai.");
+			}
+		}
+		
 	}
 	
 	
