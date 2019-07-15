@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.kerubin.api.financeiro.planocontas.entity.planoconta.PlanoContaEntity;
 import br.com.kerubin.api.financeiro.planocontas.entity.planoconta.PlanoContaServiceImpl;
@@ -59,6 +60,7 @@ public class PlanoContaServiceExtImpl extends PlanoContaServiceImpl {
 		return super.update(id, planoContaEntity);
 	}
 	
+	@Transactional
 	@Override
 	public void delete(UUID id) {
 		try {
