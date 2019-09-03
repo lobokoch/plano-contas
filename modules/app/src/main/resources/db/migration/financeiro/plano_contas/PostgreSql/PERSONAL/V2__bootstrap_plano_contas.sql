@@ -211,7 +211,7 @@ INSERT INTO plano_conta (id,codigo,descricao,tipo_financeiro,tipo_receita_despes
 ('ebb32268-5a82-4da6-8db5-2b3843097cf5','1.1.18','Acessórios','DESPESA',NULL,'4d405422-53e1-48ad-9335-f57cece3563a',true)
 ,('1824cff8-ceea-41e4-85f9-31fac02d8a79','1.1.19','Produtos Limpeza','DESPESA',NULL,'4d405422-53e1-48ad-9335-f57cece3563a',true)
 ,('07fa03bd-7c7f-4b0e-9a33-ab584e776d17','1.17.3','Presentes','DESPESA',NULL,'361736d5-d8c3-44e9-a71e-c28cf8dede6f',true)
-,('ffd33323-f1af-4d67-b105-2327e6511a5a','1.19.8','Higiene Pessoal','DESPESA',NULL,'25b25559-6221-4215-96e3-13dd28f1830c')
+,('ffd33323-f1af-4d67-b105-2327e6511a5a','1.19.8','Higiene Pessoal','DESPESA',NULL,'25b25559-6221-4215-96e3-13dd28f1830c',true)
 ,('87057271-2858-445a-9ebe-fd08684bb487','1.3.7','Dentista','DESPESA',NULL,'b2389da7-e107-455a-a654-e27ce5b91150',true)
 ON CONFLICT ON CONSTRAINT pk_plano_conta_id DO NOTHING;
 
