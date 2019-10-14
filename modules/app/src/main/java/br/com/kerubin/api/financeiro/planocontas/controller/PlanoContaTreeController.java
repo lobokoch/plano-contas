@@ -14,7 +14,7 @@ import br.com.kerubin.api.financeiro.planocontas.model.PlanoContaTreeNode;
 import br.com.kerubin.api.financeiro.planocontas.service.PlanoContasTreeService;
 
 @RestController
-@RequestMapping("entities/planoConta")
+@RequestMapping("financeiro/plano_contas/entities/planoConta")
 public class PlanoContaTreeController {
 	
 	@Inject
