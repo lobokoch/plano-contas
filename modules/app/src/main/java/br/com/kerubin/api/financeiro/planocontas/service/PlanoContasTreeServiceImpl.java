@@ -21,9 +21,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import br.com.kerubin.api.financeiro.planocontas.entity.planoconta.PlanoContaEntity;
 import br.com.kerubin.api.financeiro.planocontas.entity.planoconta.QPlanoContaEntity;
 import br.com.kerubin.api.financeiro.planocontas.model.PlanoContaTreeNode;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class PlanoContasTreeServiceImpl implements PlanoContasTreeService {
 	

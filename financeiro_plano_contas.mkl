@@ -1,6 +1,7 @@
 @label("Financeiro")
 domain financeiro
 
+@webAnalitycs(tagId: "UA-157001792-1" onlyInProduction: false)
 @label("Plano de contas")
 service plano_contas { //xx
 	
