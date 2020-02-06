@@ -88,8 +88,8 @@ public class PlanoContaServiceTest extends FinanceiroPlanoContasBaseEntityTest {
 		planoConta.setId(java.util.UUID.randomUUID());
 		planoConta.setCodigo(generateRandomString(255));
 		planoConta.setDescricao(generateRandomString(255));
-		planoConta.setTipoFinanceiro(TipoPlanoContaFinanceiro.DESPESA);
-		planoConta.setTipoReceitaDespesa(TipoReceitaDespesa.FIXO);
+		planoConta.setTipoFinanceiro(TipoPlanoContaFinanceiro.RECEITA);
+		planoConta.setTipoReceitaDespesa(TipoReceitaDespesa.VARIAVEL);
 		
 		PlanoContaEntity planoContaEntityParam = newPlanoContaEntity();
 		PlanoContaLookupResult planoContaPai = newPlanoContaLookupResult(planoContaEntityParam);
@@ -671,8 +671,8 @@ public class PlanoContaServiceTest extends FinanceiroPlanoContasBaseEntityTest {
 		
 		planoContaEntity.setCodigo(generateRandomString(255));
 		planoContaEntity.setDescricao(generateRandomString(255));
-		planoContaEntity.setTipoFinanceiro(TipoPlanoContaFinanceiro.RECEITA);
-		planoContaEntity.setTipoReceitaDespesa(TipoReceitaDespesa.FIXO);
+		planoContaEntity.setTipoFinanceiro(TipoPlanoContaFinanceiro.DESPESA);
+		planoContaEntity.setTipoReceitaDespesa(TipoReceitaDespesa.VARIAVEL);
 		planoContaEntity.setPlanoContaPai(null);
 		planoContaEntity.setAtivo(true);
 		
