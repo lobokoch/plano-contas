@@ -10,6 +10,8 @@
 	"financeiro.plano_contas.planoConta_tipoFinanceiro_grid": "Tipo financeiro",
 	"financeiro.plano_contas.planoConta_tipoFinanceiro_receita": "Receita",
 	"financeiro.plano_contas.planoConta_tipoFinanceiro_despesa": "Despesa",
+	"financeiro.plano_contas.planoConta_maisOpcoes": "Mostrar mais opções",
+	"financeiro.plano_contas.planoConta_maisOpcoes_grid": "Mostrar mais opções",
 	"financeiro.plano_contas.planoConta_tipoReceitaDespesa": "Tipo receita/despesa",
 	"financeiro.plano_contas.planoConta_tipoReceitaDespesa_grid": "Tipo receita/despesa",
 	"financeiro.plano_contas.planoConta_tipoReceitaDespesa_fixo": "Fixa",

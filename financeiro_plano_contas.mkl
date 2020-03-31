@@ -18,7 +18,7 @@ service plano_contas { //xx
 	@publishEvents
 	@auditing
 	@baseRepository
-	@label("Plano de contas")
+	@label(title: "Plano de contas")
 	entity PlanoConta {
 		
 		codigo: string
@@ -27,33 +27,53 @@ service plano_contas { //xx
 		autoComplete
 		web(styleClass: "ui-md-2")
 		listFilter(many: "Códigos")
+		help(text: "Código do item do plano de contas. Exemplo: 1.1.1.")
 		
 		descricao: string
 		label: "Descrição"
 		publishedInEvents
 		autoComplete
-		web(styleClass: "ui-md-10")		
+		web(styleClass: "ui-md-7")		
 		listFilter(many: "Descrições")
+		autoFocus
+		help(text: "Descrição do item do plano de contas. Exemplo: Despesas com educação.")
 		
 		tipoFinanceiro: TipoPlanoContaFinanceiro
 		publishedInEvents
-		web(styleClass: "ui-md-2")
+		web(styleClass: "ui-md-3")
+		help(text: "Informe se este item do plano de contas trata-se de uma Receita ou de uma Despesa.")
+		
+		/////////////////////////////
+		separator
+		maisOpcoes: boolean? transient
+		label: "Mostrar mais opções"
+		help(text: "Mostra ou oculta opções extras para o plano de contas.")
+		web(styleClass: "ui-md-12")
+		grid(hidden)
 		
 		tipoReceitaDespesa: TipoReceitaDespesa?
 		publishedInEvents
-		web(styleClass: "ui-md-2")
+		web(styleClass: "ui-md-12")
+		help(text: "Informe se este item do plano de contas é uma receita/despesa Fixa (ocorre mensalmente) ou Variável (ocorre sazonalmente).")
 		
 		planoContaPai: refers PlanoConta? manyToOne
 		label: "Plano de conta pai"
 		publishedInEvents
-		web(styleClass: "ui-md-7")
+		web(styleClass: "ui-md-12")
+		help(text: "Caso tenha, informe qual será o item já existente do plano de contas, que será o item pai deste item. Por exemplo: 'DESPESAS' é o item pai do item 'Despesas com jardinagem'.")
 		
 		ativo: boolean		
 		label: "Ativo"
 		publishedInEvents
-		web(styleClass: "ui-md-1")
+		web(styleClass: "ui-md-2")
 		listFilter(isNotNull_isNull: "Ativo;Inativo" default: "isNotNull")
+		help(text: "Informe se este item do plano de contas está Ativo ou Inativo. Apenas itens Ativos podem ser utilizados no contas a pagar e contas a receber.")
 		
+		rules {
+			with(tipoReceitaDespesa).apply(hiddeComponent).when(maisOpcoes.isFalse)
+			with(ativo).apply(hiddeComponent).when(maisOpcoes.isFalse)
+			with(planoContaPai).apply(hiddeComponent).when(maisOpcoes.isFalse)
+		}
 	}
 	
 	@label("Tipo receita/despesa")

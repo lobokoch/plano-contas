@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.Column;
 import br.com.kerubin.api.database.entity.AuditingEntity;
+import javax.persistence.Transient;
 import javax.persistence.GeneratedValue;
 import org.hibernate.annotations.GenericGenerator;
 import javax.validation.constraints.NotBlank;
@@ -51,6 +52,9 @@ public class PlanoContaEntity extends AuditingEntity {
 	@Column(name="tipo_financeiro")
 	private TipoPlanoContaFinanceiro tipoFinanceiro;
 	
+	@Transient
+	private Boolean maisOpcoes = false;
+	
 	@Enumerated(EnumType.STRING)
 	@Column(name="tipo_receita_despesa")
 	private TipoReceitaDespesa tipoReceitaDespesa;
@@ -77,6 +81,10 @@ public class PlanoContaEntity extends AuditingEntity {
 	
 	public TipoPlanoContaFinanceiro getTipoFinanceiro() {
 		return tipoFinanceiro;
+	}
+	
+	public Boolean getMaisOpcoes() {
+		return maisOpcoes;
 	}
 	
 	public TipoReceitaDespesa getTipoReceitaDespesa() {
@@ -107,6 +115,10 @@ public class PlanoContaEntity extends AuditingEntity {
 		this.tipoFinanceiro = tipoFinanceiro;
 	}
 	
+	public void setMaisOpcoes(Boolean maisOpcoes) {
+		this.maisOpcoes = maisOpcoes;
+	}
+	
 	public void setTipoReceitaDespesa(TipoReceitaDespesa tipoReceitaDespesa) {
 		this.tipoReceitaDespesa = tipoReceitaDespesa;
 	}
@@ -125,6 +137,7 @@ public class PlanoContaEntity extends AuditingEntity {
 			this.setCodigo(source.getCodigo());
 			this.setDescricao(source.getDescricao());
 			this.setTipoFinanceiro(source.getTipoFinanceiro());
+			this.setMaisOpcoes(source.getMaisOpcoes());
 			this.setTipoReceitaDespesa(source.getTipoReceitaDespesa());
 			this.setPlanoContaPai(source.getPlanoContaPai());
 			this.setAtivo(source.getAtivo());
@@ -151,6 +164,7 @@ public class PlanoContaEntity extends AuditingEntity {
 		theClone.setCodigo(this.getCodigo());
 		theClone.setDescricao(this.getDescricao());
 		theClone.setTipoFinanceiro(this.getTipoFinanceiro());
+		theClone.setMaisOpcoes(this.getMaisOpcoes());
 		theClone.setTipoReceitaDespesa(this.getTipoReceitaDespesa());
 		theClone.setPlanoContaPai(this.getPlanoContaPai() != null ? this.getPlanoContaPai().clone(visited) : null);
 		theClone.setAtivo(this.getAtivo());

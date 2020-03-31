@@ -89,7 +89,8 @@ public class PlanoContaServiceTest extends FinanceiroPlanoContasBaseEntityTest {
 		planoConta.setCodigo(generateRandomString(255));
 		planoConta.setDescricao(generateRandomString(255));
 		planoConta.setTipoFinanceiro(TipoPlanoContaFinanceiro.RECEITA);
-		planoConta.setTipoReceitaDespesa(TipoReceitaDespesa.VARIAVEL);
+		planoConta.setMaisOpcoes(false);
+		planoConta.setTipoReceitaDespesa(TipoReceitaDespesa.FIXO);
 		
 		PlanoContaEntity planoContaEntityParam = newPlanoContaEntity();
 		PlanoContaLookupResult planoContaPai = newPlanoContaLookupResult(planoContaEntityParam);
@@ -157,7 +158,7 @@ public class PlanoContaServiceTest extends FinanceiroPlanoContasBaseEntityTest {
 		planoConta.setId(java.util.UUID.randomUUID());
 		planoConta.setCodigo(generateRandomString(255));
 		planoConta.setDescricao(generateRandomString(255));
-		planoConta.setTipoFinanceiro(TipoPlanoContaFinanceiro.DESPESA);
+		planoConta.setTipoFinanceiro(TipoPlanoContaFinanceiro.RECEITA);
 		planoConta.setAtivo(true);
 		
 		// BEGIN check event created.
@@ -238,8 +239,9 @@ public class PlanoContaServiceTest extends FinanceiroPlanoContasBaseEntityTest {
 		
 		planoConta.setCodigo(generateRandomString(255));
 		planoConta.setDescricao(generateRandomString(255));
-		planoConta.setTipoFinanceiro(TipoPlanoContaFinanceiro.RECEITA);
-		planoConta.setTipoReceitaDespesa(TipoReceitaDespesa.FIXO);
+		planoConta.setTipoFinanceiro(TipoPlanoContaFinanceiro.DESPESA);
+		planoConta.setMaisOpcoes(false);
+		planoConta.setTipoReceitaDespesa(TipoReceitaDespesa.VARIAVEL);
 		
 		PlanoContaEntity planoContaEntityParam = newPlanoContaEntity();
 		PlanoContaLookupResult planoContaPai = newPlanoContaLookupResult(planoContaEntityParam);
@@ -672,6 +674,7 @@ public class PlanoContaServiceTest extends FinanceiroPlanoContasBaseEntityTest {
 		planoContaEntity.setCodigo(generateRandomString(255));
 		planoContaEntity.setDescricao(generateRandomString(255));
 		planoContaEntity.setTipoFinanceiro(TipoPlanoContaFinanceiro.DESPESA);
+		planoContaEntity.setMaisOpcoes(false);
 		planoContaEntity.setTipoReceitaDespesa(TipoReceitaDespesa.VARIAVEL);
 		planoContaEntity.setPlanoContaPai(null);
 		planoContaEntity.setAtivo(true);

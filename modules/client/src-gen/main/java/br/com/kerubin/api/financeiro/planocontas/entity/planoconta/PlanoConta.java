@@ -29,6 +29,8 @@ public class PlanoConta {
 	@NotNull(message="\"tipoFinanceiro\" é obrigatório.")
 	private TipoPlanoContaFinanceiro tipoFinanceiro;
 	
+	private Boolean maisOpcoes = false;
+	
 	private TipoReceitaDespesa tipoReceitaDespesa;
 	
 	private PlanoContaLookupResult planoContaPai;
@@ -66,6 +68,10 @@ public class PlanoConta {
 	
 	public TipoPlanoContaFinanceiro getTipoFinanceiro() {
 		return tipoFinanceiro;
+	}
+	
+	public Boolean getMaisOpcoes() {
+		return maisOpcoes;
 	}
 	
 	public TipoReceitaDespesa getTipoReceitaDespesa() {
@@ -110,6 +116,10 @@ public class PlanoConta {
 	
 	public void setTipoFinanceiro(TipoPlanoContaFinanceiro tipoFinanceiro) {
 		this.tipoFinanceiro = tipoFinanceiro;
+	}
+	
+	public void setMaisOpcoes(Boolean maisOpcoes) {
+		this.maisOpcoes = maisOpcoes;
 	}
 	
 	public void setTipoReceitaDespesa(TipoReceitaDespesa tipoReceitaDespesa) {
