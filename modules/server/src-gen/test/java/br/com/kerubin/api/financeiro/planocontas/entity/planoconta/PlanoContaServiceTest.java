@@ -239,9 +239,9 @@ public class PlanoContaServiceTest extends FinanceiroPlanoContasBaseEntityTest {
 		
 		planoConta.setCodigo(generateRandomString(255));
 		planoConta.setDescricao(generateRandomString(255));
-		planoConta.setTipoFinanceiro(TipoPlanoContaFinanceiro.DESPESA);
+		planoConta.setTipoFinanceiro(TipoPlanoContaFinanceiro.RECEITA);
 		planoConta.setMaisOpcoes(false);
-		planoConta.setTipoReceitaDespesa(TipoReceitaDespesa.VARIAVEL);
+		planoConta.setTipoReceitaDespesa(TipoReceitaDespesa.FIXO);
 		
 		PlanoContaEntity planoContaEntityParam = newPlanoContaEntity();
 		PlanoContaLookupResult planoContaPai = newPlanoContaLookupResult(planoContaEntityParam);
@@ -312,7 +312,7 @@ public class PlanoContaServiceTest extends FinanceiroPlanoContasBaseEntityTest {
 		
 		planoConta.setCodigo(generateRandomString(255));
 		planoConta.setDescricao(generateRandomString(255));
-		planoConta.setTipoFinanceiro(TipoPlanoContaFinanceiro.DESPESA);
+		planoConta.setTipoFinanceiro(TipoPlanoContaFinanceiro.RECEITA);
 		planoConta.setAtivo(true);
 		
 		// BEGIN check event updated.
@@ -673,9 +673,9 @@ public class PlanoContaServiceTest extends FinanceiroPlanoContasBaseEntityTest {
 		
 		planoContaEntity.setCodigo(generateRandomString(255));
 		planoContaEntity.setDescricao(generateRandomString(255));
-		planoContaEntity.setTipoFinanceiro(TipoPlanoContaFinanceiro.DESPESA);
+		planoContaEntity.setTipoFinanceiro(TipoPlanoContaFinanceiro.RECEITA);
 		planoContaEntity.setMaisOpcoes(false);
-		planoContaEntity.setTipoReceitaDespesa(TipoReceitaDespesa.VARIAVEL);
+		planoContaEntity.setTipoReceitaDespesa(TipoReceitaDespesa.FIXO);
 		planoContaEntity.setPlanoContaPai(null);
 		planoContaEntity.setAtivo(true);
 		

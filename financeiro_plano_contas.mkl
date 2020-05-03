@@ -37,6 +37,7 @@ service plano_contas { //xx
 		listFilter(many: "Descrições")
 		autoFocus
 		help(text: "Descrição do item do plano de contas. Exemplo: Despesas com educação.")
+		unaccent
 		
 		tipoFinanceiro: TipoPlanoContaFinanceiro
 		publishedInEvents

@@ -86,6 +86,16 @@ public class PlanoContaServiceImpl implements PlanoContaService {
 		publishEvent(entity, PlanoContaEvent.PLANO_CONTA_DELETED);
 	}
 	
+	@Transactional
+	@Override
+	public void deleteInBulk(java.util.List<java.util.UUID> idList) {
+		// Delete it.
+		planoContaBaseRepository.deleteInBulk(idList);
+		
+		// Force flush to the database, for relationship validation and must throw exception because of this here.
+		planoContaBaseRepository.flush();
+	}
+	
 	protected void publishEvent(PlanoContaEntity entity, String eventName) {
 		DomainEvent event = new PlanoContaEvent(entity.getId(), 
 			entity.getCodigo(), 
